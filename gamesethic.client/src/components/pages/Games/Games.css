@@ -1,0 +1,5 @@
+.Games__list {
+    display: grid;
+    grid-template-columns: repeat(6,15%);
+    gap: 8px;
+}

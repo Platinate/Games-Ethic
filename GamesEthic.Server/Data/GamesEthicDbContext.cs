@@ -1,9 +1,10 @@
 ﻿using GamesEthic.Server.Models.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace GamesEthic.Server.Data
 {
-    public class GamesEthicDbContext : DbContext
+    public class GamesEthicDbContext : IdentityDbContext<User>
     {
         public DbSet<Game> Games { get; set; }
 

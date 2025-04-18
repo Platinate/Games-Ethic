@@ -11,6 +11,11 @@ namespace GamesEthic.Server.Data.Repositories
         {
             _dbContext = dbContext;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public async Task<Game> CreateGame(Game game)
         {
             _dbContext.Games.Add(game);
@@ -18,27 +23,48 @@ namespace GamesEthic.Server.Data.Repositories
             return game;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<bool> DeleteGameById(int id)
         {
-            var game = _dbContext.Games.FirstOrDefault(x => x.Id == id);
-            if (game == null) return false;
+            var game = await _dbContext.Games.FindAsync(id);
+            if (game is null) return false;
+
             _dbContext.Games.Remove(game);
             await _dbContext.SaveChangesAsync();
             return true;
         }
 
-        public async Task<IEnumerable<Game>> GetGames()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Game>> GetGames(string name)
         {
-            var games = await _dbContext.Games.ToListAsync();
-            return games;
+            return await _dbContext.Games
+                .Where(x => string.IsNullOrEmpty(name) || x.Name == name)
+                .ToListAsync();
         }
 
-        public async Task<Game> GetById(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<Game?> GetById(int id)
         {
-            var game = await _dbContext.Games.FirstOrDefaultAsync(x => x.Id == id);
-            return game;
+            return await _dbContext.Games.FindAsync(id);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
         public async Task<Game> UpdateGame(Game game)
         {
             _dbContext.Games.Update(game);

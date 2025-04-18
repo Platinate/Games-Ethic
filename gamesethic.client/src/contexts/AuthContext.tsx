@@ -1,10 +1,15 @@
 import useAuth from "@/hooks/useAuth";
+import IUserTO from "@/models/DTOs/User/UserTO";
 import React, { createContext, useContext, ReactNode } from "react";
 
 interface AuthState {
+    token: string | undefined,
+    roles: string[],
+    user: IUserTO | undefined,
     isAuthenticated:boolean;
     login: (username:string,password:string) => void;
     logout: () => void;
+    init: () => void;
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined);

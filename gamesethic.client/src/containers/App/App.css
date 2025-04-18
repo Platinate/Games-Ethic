@@ -1,11 +1,19 @@
-﻿#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+﻿.App {
+    height: 100%;
+    display: grid;
+    grid-template-rows: 50px 1fr;
+    gap: 8px;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+.App__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 8px;
 }
+
+.App__body {
+    height: 100%;
+    margin: 0 8px;
+}
+

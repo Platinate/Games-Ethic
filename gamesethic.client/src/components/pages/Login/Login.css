@@ -1,0 +1,12 @@
+.Login {
+    margin: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Login__card {
+    width: 350px;
+    margin: auto;
+}

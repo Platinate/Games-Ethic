@@ -4,9 +4,8 @@ namespace GamesEthic.Server.Data.Repositories.Interfaces
 {
     public interface IGameRepository
     {
-        Task<IEnumerable<Game>> GetGames();
+        Task<IEnumerable<Game>> GetGames(string name);
         Task<Game> GetById(int id);
-        
         Task<Game> CreateGame(Game game);
         Task<Game> UpdateGame(Game game);
         Task<bool> DeleteGameById(int id);

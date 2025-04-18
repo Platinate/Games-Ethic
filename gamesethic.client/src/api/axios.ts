@@ -1,39 +1,78 @@
+import CONSTANTS from "@/constants";
 import axios from "axios";
 
 const instance = axios.create({
-  timeout: 5000
+  timeout: 5000,
+  baseURL: "https://localhost:7047",
+  headers: {
+    // En global, on laisse l'axios choisir le bon Content-Type par défaut
+  }
+});
+
+instance.interceptors.request.use((config) => {
+  const token = localStorage.getItem(CONSTANTS.ACCESS_TOKEN);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 const agent = {
-  get: (url: string, signal?: AbortSignal, authorization?: string) =>
+  get: (url: string, signal?: AbortSignal) =>
     instance
-      .get(url, { signal: signal, headers: { Authorization: authorization } })
+      .get(url, {
+        signal,
+      })
       .then((response) => response.data),
+
   post: (
     url: string,
     body: unknown,
     signal?: AbortSignal,
-    authorization?: string,
-    contentType: string | null = null
+    contentType?: string // optionnel
   ) =>
     instance
       .post(url, body, {
-        signal: signal,
-        headers: { Authorization: authorization, "Content-Type": contentType },
+        signal,
+        headers: {
+          ...(contentType && { "Content-Type": contentType })
+        }
       })
       .then((response) => response.data),
-  put: (url: string, body: unknown, signal?: AbortSignal, authorization?: string) =>
+
+  put: (
+    url: string,
+    body: unknown,
+    signal?: AbortSignal,
+  ) =>
     instance
       .put(url, body, {
-        signal: signal,
-        headers: { Authorization: authorization },
+        signal
       })
       .then((response) => response.data),
-  delete: (url: string, signal?: AbortSignal, authorization?: string) =>
+
+  patch: (
+    url: string,
+    body: unknown,
+    signal?: AbortSignal,
+    contentType: string = "application/json-patch+json"
+  ) =>
+    instance
+      .patch(url, body, {
+        signal,
+        headers: {
+          ...(contentType && { "Content-Type": contentType })
+        }
+      })
+      .then((response) => response.data),
+
+  delete: (
+    url: string,
+    signal?: AbortSignal,
+  ) =>
     instance
       .delete(url, {
-        signal: signal,
-        headers: { Authorization: authorization },
+        signal,
       })
       .then((response) => response.data),
 };

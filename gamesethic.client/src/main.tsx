@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
@@ -8,45 +7,49 @@ import Games from "./components/pages/Games";
 import GameDetails from "./components/pages/GameDetails";
 import App from "./containers/App";
 import { AuthProvider } from "./contexts/AuthContext";
+import Login from "./components/pages/Login";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    Component: App,
-    children: [
-      {
-        index: true,
-        Component: Home,
-      },
-      {
-        path: "profile",
-        Component: Profile,
-      },
-      {
-        path: "games",
+    {
+        path: "/",
+        Component: App,
         children: [
-          {
-            index: true,
-            Component: Games,
-          },
-          {
-            path: ":id",
-            Component: GameDetails,
-          },
+            {
+                index: true,
+                Component: Home,
+            },
+            {
+                path: "profile",
+                Component: Profile,
+            },
+
+            {
+                path: "login",
+                Component: Login
+            },
+            {
+                path: "games",
+                children: [
+                    {
+                        index: true,
+                        Component: Games,
+                    },
+                    {
+                        path: ":id",
+                        Component: GameDetails,
+                    },
+                ],
+            },
+            {
+                path: "*",
+                element: <Navigate to="/" />
+            }
         ],
-      },
-      {
-        path: "*",
-        element: <Navigate to="/" />
-      }
-    ],
-  },
+    },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+        <RouterProvider router={router} />
     </AuthProvider>
-  </StrictMode>
 );
